@@ -1,4 +1,4 @@
-# Ng2-Interceptor-Demo
+# x-ng4-http-interceptor-dontuse-demo
 
 Feature demonstration of x-ng4-http-interceptor-dontuse-demo
 
