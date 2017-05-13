@@ -1,0 +1,7 @@
+<ng-progress showSpinner="false"></ng-progress>
+<nav md-tab-nav-bar>
+  <a md-tab-link *ngFor="let tab of tabs" [routerLink]="tab.url" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+    {{tab.name}}
+  </a>
+</nav>
+<router-outlet></router-outlet>
