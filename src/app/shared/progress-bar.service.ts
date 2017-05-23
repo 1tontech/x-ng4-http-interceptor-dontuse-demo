@@ -1,4 +1,4 @@
-import { NgProgressService } from 'ngx-progressbar/service/progress.service';
+import { NgProgressService } from 'ngx-progressbar';
 
 export class ProgressBarService extends NgProgressService {
 
@@ -6,6 +6,7 @@ export class ProgressBarService extends NgProgressService {
 
   start(): void {
     if (this.concurrentlySharedBy === 0) {
+      console.log('Starting progress bar');
       super.start();
     }
     this.concurrentlySharedBy++;
@@ -13,9 +14,12 @@ export class ProgressBarService extends NgProgressService {
 
   done(): void {
     if (this.concurrentlySharedBy === 1) {
+      console.log('Stopping progress bar');
       super.done();
     }
-    this.concurrentlySharedBy--;
+    if (this.concurrentlySharedBy > 0) {
+      this.concurrentlySharedBy--;
+    }
   }
 
 }

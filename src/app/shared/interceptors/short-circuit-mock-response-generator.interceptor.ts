@@ -14,6 +14,7 @@ import {
 export class ShortCircuitMockResponseGenerator implements Interceptor {
 
   onShortCircuit(responseWrapper: InterceptorResponseWrapper, interceptorStep: number): Observable<InterceptorResponseWrapper> {
+    console.log('Generating mock response');
     const builder = InterceptorResponseWrapperBuilder.new(responseWrapper);
     const response = new Response(new ResponseOptions({
       body: JSON.stringify({

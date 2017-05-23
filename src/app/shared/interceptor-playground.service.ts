@@ -1,12 +1,8 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
-
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-
 import { InterceptorRequestOptionsArgs, InterceptorService } from 'x-ng4-http-interceptor-dontuse';
-
 import { Movie } from './movie.model';
-
 
 @Injectable()
 export class InterceptorPlaygroundService {
@@ -70,6 +66,16 @@ export class InterceptorPlaygroundService {
     } as InterceptorRequestOptionsArgs;
     return this.interceptorService.get('/app/non-existant', options)
       .map(response => response.json().data as Movie[]);
+  }
+
+  simulateLongRequest(): Observable<Response> {
+    console.log('Simulating long request');
+    const options = {
+      sharedData: {
+        'indefiniteLoad': true
+      }
+    } as InterceptorRequestOptionsArgs;
+    return this.interceptorService.get('/app/simulate', options);
   }
 
 }

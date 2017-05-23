@@ -17,7 +17,7 @@ import {
 } from 'x-ng4-http-interceptor-dontuse';
 
 @Injectable()
-export class RequestRetringRealResponseTransformer implements RealResponseObservableTransformer {
+export class RequestRetryingRealResponseTransformer implements RealResponseObservableTransformer {
 
   transform(response$: Observable<Response>, request: InterceptorRequest,
     http: HttpDirect, interceptorService: InterceptorService): Observable<Response> {

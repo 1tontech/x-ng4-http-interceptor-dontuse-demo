@@ -7,10 +7,11 @@
       <md-button-toggle (click)="shortCircuitAndGetMockResponse()" value="shortCircuitAndGetMockResponse1">Short circuit & Get mock response</md-button-toggle>
       <md-button-toggle (click)="simulateError()" value="simulateError">Simulate error</md-button-toggle>
       <md-button-toggle (click)="simulateErrorAndGetMockResponse()" value="simulateErrorAndGetMockResponse">Simulate error & Get mock response</md-button-toggle>
+      <md-button-toggle (click)="switchToUnsubscribe()" value="unsubscribe">Test unsubscription</md-button-toggle>
     </md-button-toggle-group>
   </md-sidenav>
   <div style="min-height: 600px; margin: 20px;">
-    <section *ngIf="!showAllMovies && !retryFailure && !shortCircuitedNoResponse && !shortCircuitedWithMockResponse && !errorUnhandled && !errorHandledWithMockResponse">
+    <section *ngIf="!showAllMovies && !retryFailure && !shortCircuitedNoResponse && !shortCircuitedWithMockResponse && !errorUnhandled && !errorHandledWithMockResponse && !unsubscribeFlow">
       <h1>&lt;-- Click on one of the options from the left navigation</h1>
     </section>
     <div *ngIf="showAllMovies">
@@ -49,6 +50,10 @@
         <md-card-title>{{movie.name}}</md-card-title>
         <md-card-subtitle>{{movie.year}} {{movie.documentary ? 'documentary' : 'movie'}}</md-card-subtitle>
       </md-card>
+    </div>
+    <div *ngIf="unsubscribeFlow">
+      <button md-raised-button *ngIf="!unsubscribeSimulationInprogress" (click)="onSimulateLongRequest()">Simulate long request (~5 mins)</button>
+      <button md-raised-button *ngIf="unsubscribeSimulationInprogress" (click)="onCancelRequest()">Cancel request</button>
     </div>
   </div>
 </md-sidenav-container>

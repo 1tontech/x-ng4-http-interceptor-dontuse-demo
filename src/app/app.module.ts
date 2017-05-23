@@ -1,3 +1,6 @@
+import {
+  TriggerEnabledInfiniteLoopingInterceptor
+} from './shared/interceptors/trigger-enabled-inifinite-loading.interceptor';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
@@ -22,7 +25,7 @@ import { InterceptorPlaygroundService } from './shared/interceptor-playground.se
 import { ShortCircuitMockResponseGenerator } from './shared/interceptors/short-circuit-mock-response-generator.interceptor';
 import { ShortCircuitTriggerHttpInterceptor } from './shared/interceptors/short-circuit-trigger.interceptor';
 import { ProgressBarService } from './shared/progress-bar.service';
-import { RequestRetringRealResponseTransformer } from './shared/request-retrying-real-response-transformer.service';
+import { RequestRetryingRealResponseTransformer } from './shared/request-retrying-real-response-transformer.service';
 import { RouteChangeComponent } from './route-change/route-change.component';
 import { RoutingWithResolveComponent } from './routing-with-resolve/routing-with-resolve.component';
 
@@ -34,7 +37,8 @@ export function interceptorFactory(xhrBackend: XHRBackend,
   service.addInterceptor(new ErrorMockResponseGenerator());
   service.addInterceptor(new ShortCircuitMockResponseGenerator());
   service.addInterceptor(new ShortCircuitTriggerHttpInterceptor());
-  service.realResponseObservableTransformer = new RequestRetringRealResponseTransformer();
+  service.addInterceptor(new TriggerEnabledInfiniteLoopingInterceptor());
+  service.realResponseObservableTransformer = new RequestRetryingRealResponseTransformer();
   return service;
 }
 

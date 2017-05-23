@@ -14,6 +14,7 @@ export class ErrorMockResponseGenerator implements Interceptor {
     if (responseWrapper.sharedData['error'] &&
       responseWrapper.sharedData['cascade'] !== undefined &&
       !responseWrapper.sharedData['cascade']) {
+      console.log('Handling error', responseWrapper.sharedData['error']);
       const response = new Response(new ResponseOptions({
         body: JSON.stringify({
           data: [{

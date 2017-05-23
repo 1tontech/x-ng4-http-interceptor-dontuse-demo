@@ -1,8 +1,10 @@
+import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { InterceptorPlaygroundService } from '../shared/interceptor-playground.service';
 import { Movie } from '../shared/movie.model';
+import { MdSnackBar, MdSnackBarConfig } from '@angular/material';
 
 @Component({
   templateUrl: './interceptor-playground.component.html'
@@ -16,10 +18,13 @@ export class InterceptorPlaygroundComponent {
   shortCircuitedWithMockResponse: boolean;
   errorUnhandled: boolean;
   errorHandledWithMockResponse: boolean;
+  unsubscribeFlow: boolean;
 
   error: any;
+  unsubscribeSimulationInprogress = false;
+  private pendingSubscription: Subscription;
 
-  constructor(private service: InterceptorPlaygroundService) { }
+  constructor(private service: InterceptorPlaygroundService, private snackBar: MdSnackBar) { }
 
   load() {
     this.service.load().subscribe(movies => {
@@ -90,6 +95,33 @@ export class InterceptorPlaygroundComponent {
       });
   }
 
+  switchToUnsubscribe() {
+    this.reset();
+    this.unsubscribeFlow = true;
+  }
+
+  onSimulateLongRequest() {
+    this.unsubscribeSimulationInprogress = true;
+    this.pendingSubscription = this.service.simulateLongRequest()
+      .subscribe(_ => {
+        throw new Error('Should not be called');
+      },
+      err => {
+        throw new Error('Should not be called');
+      },
+      () => {
+        throw new Error('Should not be called');
+      });
+  }
+
+  onCancelRequest() {
+    let config = new MdSnackBarConfig();
+    config.duration = 1000;
+    this.snackBar.open('Progress bar should have been stopped', null, config);
+    this.pendingSubscription.unsubscribe();
+    this.unsubscribeSimulationInprogress = false;
+  }
+
   reset(): void {
     this.movies = undefined;
     this.showAllMovies = undefined;
@@ -98,6 +130,7 @@ export class InterceptorPlaygroundComponent {
     this.shortCircuitedWithMockResponse = undefined;
     this.errorUnhandled = undefined;
     this.errorHandledWithMockResponse = undefined;
+    this.unsubscribeFlow = undefined;
     this.error = undefined;
   }
 
